@@ -1,34 +1,24 @@
 <!DOCTYPE html>
+{% load staticfiles %}
 <html>
   <head>
     <meta charset="utf-8">
     <title>Welcome Center</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  </head>
-  <style>
-  #container {
-      margin: 0px auto;
-      width: 500px;
-      height: 375px;
-      border: 10px #333 solid;
-  }
-  #videoElement {
-      width: 500px;
-      height: 375px;
-      background-color: #666;
-  }
-  </style>
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
   </head>
 
   <body>
-      <div id="container">
-          <video autoplay="true" id="videoElement">
-
+    <div class="jumbotron">
+      <h2>CCF Welcome Center</h2>
+      <div class="video-container">
+          <video autoplay="true" class="videoElement">
           </video>
       </div>
+    </div>
 
     <script>
       const constraints = {
+        audio: false
         video: true
       };
 
@@ -39,14 +29,12 @@
       }
 
       function handleError(error) {
-        console.error('Reeeejected!', error);
+        console.log(err.name + ": " + err.message)};
       }
 
       navigator.mediaDevices.getUserMedia(constraints).
         then(handleSuccess).catch(handleError);
     </script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
   </body>
 </html>
