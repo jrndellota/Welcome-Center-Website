@@ -16,7 +16,7 @@
           </video>
       </div>
       <div class="list-container">
-        <form method="post" enctype="multipart/form-data">
+        <form method="post">
           {% csrf_token %}
           {{form}}
           <input type="button" name="Submit" value="Submit">

@@ -11,7 +11,7 @@ from first_app.forms import ImageForm
 import re
 import base64
 from PIL import Image
-import pyzbar.pyzbar as pyzbar
+#from pyzbar.pyzbar import decode
 
 # Create your views here.
 
@@ -19,15 +19,16 @@ def index(request):
     form = ImageForm()
     code ='this is the qrcode'
 
-    if request.method == 'POST' and request.FILES['img']:
-        myfile = request.FILES['img']
+    if request.method == 'POST':
+        data = ImageForm(request.POST)
+        print(data)
         dataUrlPattern = re.compile('data:image/(png|jpeg);base64,(.*)$')
-
-        image_data = dataUrlPattern.match(myfile).group(2)
+        image_data= data.cleaned_data['img']
+        image_data = dataUrlPattern.match(image_data).group(2)
         image_data = image_data.encode()
         image_data = base64.b64decode(image_data)
-        image = Image.formarray(image_data)
-        code = pyzbar.decode(image).data
+        #image = Image.open(image_data)
+        code = decode(image_data).data
         print(code)
 
     return render(request, 'index.html',{"code":code, "form": form})
