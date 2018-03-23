@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Welcome Center</title>
     <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
   </head>
 
   <body>
@@ -14,14 +15,23 @@
           <video autoplay="true" class="videoElement">
           </video>
       </div>
+      <div class="list-container">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{form}}
+          <input type="button" name="Submit" value="Submit">
+        </form>
+        <h3>{{code}}</h3>
+      </div>
     </div>
 
     <script>
+
+      // Access browser webcam
       const constraints = {
-        audio: false
+        audio: false,
         video: true
       };
-
       const video = document.querySelector('video');
 
       function handleSuccess(stream) {
@@ -29,11 +39,29 @@
       }
 
       function handleError(error) {
-        console.log(err.name + ": " + err.message)};
+        console.log(err.name + ": " + err.message);
       }
 
       navigator.mediaDevices.getUserMedia(constraints).
         then(handleSuccess).catch(handleError);
+
+      //Create Canvas
+      const canvas = document.createElement('canvas');
+      var code = document.querySelector('h3');
+
+      video.onclick = function() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        // Other browsers will fall back to image/png
+        var img= canvas.toDataURL();
+
+        $('#id_img').val(img);
+        $('form').submit();
+
+      };
+
+
     </script>
 
   </body>
